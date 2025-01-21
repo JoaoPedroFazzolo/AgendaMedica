@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/agendamedica/medico")
 public class MedicoController {
 
-    public final MedicoService medicoService;
+    private final MedicoService medicoService;
 
     @GetMapping("/listar")
     public List<MedicoModel> listar() {

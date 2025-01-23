@@ -2,10 +2,14 @@ package com.agendamedica.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 
 import java.util.List;
 
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

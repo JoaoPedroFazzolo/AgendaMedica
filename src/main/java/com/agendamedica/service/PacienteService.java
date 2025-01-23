@@ -2,25 +2,33 @@ package com.agendamedica.service;
 
 import com.agendamedica.entity.PacienteModel;
 import com.agendamedica.repository.PacienteRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PacienteService {
 
-    private final PacienteRepository PacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     public PacienteService(com.agendamedica.repository.PacienteRepository pacienteRepository) {
-        PacienteRepository = pacienteRepository;
+        this.pacienteRepository = pacienteRepository;
     }
 
     public List<PacienteModel> listar() {
-        return PacienteRepository.findAll();
+        return pacienteRepository.findAll();
     }
 
     public PacienteModel salvar(PacienteModel pacienteModel) {
-        return PacienteRepository.save(pacienteModel);
+        return pacienteRepository.save(pacienteModel);
+    }
+
+    public Optional<PacienteModel> buscarPorId(Long id) {
+        return pacienteRepository.findById(id);
+    }
+
+    public void excluir(Long id) {
+        pacienteRepository.deleteById(id);
     }
 }

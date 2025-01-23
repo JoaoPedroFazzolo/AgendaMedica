@@ -2,10 +2,10 @@ package com.agendamedica.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,9 +19,9 @@ public class FuncionarioModel {
     private String nome;
 
     @Column(name = "cpf", length = 11, nullable = false, unique = true)
-    private int cpf;
+    private String cpf;
 
-    @Column(name = "especialidade", length = 100, nullable = false)
+    @Column(name = "funcao", length = 100, nullable = false)
     private String funcao;
 
     public long getId() {
@@ -40,11 +40,11 @@ public class FuncionarioModel {
         this.nome = nome;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

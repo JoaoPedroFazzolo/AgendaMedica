@@ -1,13 +1,15 @@
 package com.agendamedica.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import java.time.LocalDateTime;
 
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +28,7 @@ public class ConsultaModel {
     @JoinColumn(name = "paciente_id", referencedColumnName = "id", nullable = false)
     private PacienteModel pacienteModel;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "data", nullable = false)
     private LocalDateTime dataConsulta;
 

@@ -2,16 +2,11 @@ package com.agendamedica.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "paciente")
@@ -30,7 +25,47 @@ public class PacienteModel {
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @OneToMany(mappedBy = "paciente")
+    @OneToMany(mappedBy = "id")
     @JsonIgnore
     private List<ConsultaModel> consultaModels;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public List<ConsultaModel> getConsultaModels() {
+        return consultaModels;
+    }
+
+    public void setConsultaModels(List<ConsultaModel> consultaModels) {
+        this.consultaModels = consultaModels;
+    }
 }

@@ -10,13 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/agendamedica/funcionario")
 public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
 
-    @GetMapping("/listar")
+    public FuncionarioController(FuncionarioService funcionarioService) {
+        this.funcionarioService = funcionarioService;
+    }
+
+    @GetMapping
     public List<FuncionarioModel> listar() {
         return funcionarioService.listar();
     }

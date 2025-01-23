@@ -2,10 +2,7 @@ package com.agendamedica.controller;
 
 import com.agendamedica.entity.FuncionarioModel;
 import com.agendamedica.service.FuncionarioService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +19,10 @@ public class FuncionarioController {
     @GetMapping
     public List<FuncionarioModel> listar() {
         return funcionarioService.listar();
+    }
+
+    @PostMapping("/salvar")
+    public FuncionarioModel salvar(@RequestBody FuncionarioModel funcionario) {
+        return funcionarioService.salvar(funcionario);
     }
 }

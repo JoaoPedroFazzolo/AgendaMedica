@@ -12,6 +12,7 @@ public class ConsultaMapper {
                 .builder()
                 .medicoModel(consultaRequest.medicoModel())
                 .pacienteModel(consultaRequest.pacienteModel())
+                .dataConsulta(consultaRequest.dataConsulta())
                 .build();
     }
 
@@ -21,6 +22,7 @@ public class ConsultaMapper {
                 .id(consultaModel.getId())
                 .medicoModel(consultaModel.getMedicoModel())
                 .pacienteModel(consultaModel.getPacienteModel())
+                .dataConsulta(consultaModel.getDataConsulta())
                 .build();
     }
 }

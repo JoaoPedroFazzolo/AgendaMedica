@@ -2,14 +2,10 @@ package com.agendamedica.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.List;
 
-@Builder
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "medico")
 public class MedicoModel {
 
@@ -29,6 +25,17 @@ public class MedicoModel {
     @OneToMany(mappedBy = "id")
     @JsonIgnore
     private List<ConsultaModel> consultaModels;
+
+    public MedicoModel() {
+    }
+
+    public MedicoModel(long id, String nome, String cpf, String especialidade, List<ConsultaModel> consultaModels) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.especialidade = especialidade;
+        this.consultaModels = consultaModels;
+    }
 
     public long getId() {
         return id;
@@ -68,5 +75,46 @@ public class MedicoModel {
 
     public void setConsultaModels(List<ConsultaModel> consultaModels) {
         this.consultaModels = consultaModels;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private long id;
+        private String nome;
+        private String cpf;
+        private String especialidade;
+        private List<ConsultaModel> consultaModels;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder nome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder cpf(String cpf) {
+            this.cpf = cpf;
+            return this;
+        }
+
+        public Builder especialidade(String especialidade) {
+            this.especialidade = especialidade;
+            return this;
+        }
+
+        public Builder consultaModels(List<ConsultaModel> consultaModels) {
+            this.consultaModels = consultaModels;
+            return this;
+        }
+
+        public MedicoModel build() {
+            return new MedicoModel(id, nome, cpf, especialidade, consultaModels);
+        }
     }
 }

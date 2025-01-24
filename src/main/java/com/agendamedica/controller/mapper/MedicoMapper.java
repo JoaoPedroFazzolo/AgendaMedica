@@ -10,16 +10,19 @@ import java.util.List;
 
 @UtilityClass
 public class MedicoMapper {
+
+    // Converte MedicoRequest para MedicoModel
     public static MedicoModel toMedico(MedicoRequest medicoRequest) {
         return MedicoModel
                 .builder()
                 .nome(medicoRequest.nome())
                 .cpf(medicoRequest.cpf())
                 .especialidade(medicoRequest.especialidade())
-                .consultaModels((List<ConsultaModel>) medicoRequest.consultaModel())
+                .consultaModels((List<ConsultaModel>) medicoRequest.consultaModel())  // Já é uma lista
                 .build();
     }
 
+    // Converte MedicoModel para MedicoResponse
     public static MedicoResponse toMedicoResponse(MedicoModel medicoModel) {
         return MedicoResponse
                 .builder()
@@ -27,7 +30,7 @@ public class MedicoMapper {
                 .nome(medicoModel.getNome())
                 .cpf(medicoModel.getCpf())
                 .especialidade(medicoModel.getEspecialidade())
-                .consultaModel((ConsultaModel) medicoModel.getConsultaModels())
+                .consultaModels(medicoModel.getConsultaModels())  // Consistente com o nome
                 .build();
     }
 }

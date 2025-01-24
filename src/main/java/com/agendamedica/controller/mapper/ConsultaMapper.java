@@ -3,7 +3,7 @@ package com.agendamedica.controller.mapper;
 import com.agendamedica.controller.request.ConsultaRequest;
 import com.agendamedica.controller.response.ConsultaResponse;
 import com.agendamedica.entity.ConsultaModel;
-import lombok.experimental.UtilityClass;
+import lombok.experimental.*;
 
 @UtilityClass
 public class ConsultaMapper {

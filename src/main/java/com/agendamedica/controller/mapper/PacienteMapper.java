@@ -2,8 +2,11 @@ package com.agendamedica.controller.mapper;
 
 import com.agendamedica.controller.request.PacienteRequest;
 import com.agendamedica.controller.response.PacienteResponse;
+import com.agendamedica.entity.ConsultaModel;
 import com.agendamedica.entity.PacienteModel;
 import lombok.experimental.UtilityClass;
+
+import java.util.List;
 
 
 @UtilityClass
@@ -15,6 +18,7 @@ public class PacienteMapper {
                 .nome(pacienteRequest.nome())
                 .cpf(pacienteRequest.cpf())
                 .telefone(pacienteRequest.telefone())
+                .consultaModels((List<ConsultaModel>) pacienteRequest.consultaModel())
                 .build();
     }
 
@@ -25,6 +29,7 @@ public class PacienteMapper {
                 .nome(pacienteModel.getNome())
                 .cpf(pacienteModel.getCpf())
                 .telefone(pacienteModel.getTelefone())
+                .consultaModel(pacienteModel.getConsultaModels())
                 .build();
     }
 }

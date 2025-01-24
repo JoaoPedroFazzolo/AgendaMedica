@@ -5,6 +5,8 @@ import com.agendamedica.controller.request.ConsultaRequest;
 import com.agendamedica.controller.response.ConsultaResponse;
 import com.agendamedica.entity.ConsultaModel;
 import com.agendamedica.service.ConsultaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,31 +23,29 @@ public class ConsultaController {
     }
 
     @GetMapping
-    public List<ConsultaResponse> listar() {
-        List<ConsultaModel> consultas = consultaService.listar();
-        return consultas.stream()
+    public ResponseEntity<List<ConsultaResponse>> listar() {
+        return ResponseEntity.ok(consultaService.listar()
+                .stream()
                 .map(ConsultaMapper::toConsultaResponse)
-                .toList();
+                .toList());
     }
 
     @PostMapping("/salvar")
-    public ConsultaResponse salvar(@RequestBody ConsultaRequest request) {
+    public ResponseEntity<ConsultaResponse> salvar(@RequestBody ConsultaRequest request) {
         ConsultaModel novaConsulta = ConsultaMapper.toConsulta(request);
         ConsultaModel consultaSalva = consultaService.salvar(novaConsulta);
-        return ConsultaMapper.toConsultaResponse(consultaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ConsultaMapper.toConsultaResponse(consultaSalva));
     }
 
     @GetMapping("/{id}")
-    public ConsultaResponse buscarPorId(@PathVariable Long id) {
-        Optional<ConsultaModel> consulta = consultaService.buscarPorId(id);
-        if (consulta.isPresent()) {
-            return ConsultaMapper.toConsultaResponse(consulta.get());
-        }
-        return null;
+    public ResponseEntity<ConsultaResponse> buscarPorId(@PathVariable Long id) {
+        return consultaService.buscarPorId(id).map(consulta -> ResponseEntity.ok(ConsultaMapper.toConsultaResponse(consulta)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
         consultaService.excluir(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -5,6 +5,8 @@ import com.agendamedica.controller.request.MedicoRequest;
 import com.agendamedica.controller.response.MedicoResponse;
 import com.agendamedica.entity.MedicoModel;
 import com.agendamedica.service.MedicoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,32 +23,30 @@ public class MedicoController {
     }
 
     @GetMapping
-    public List<MedicoResponse> listar() {
-        List<MedicoModel> medicos = medicoService.listar();
-        return medicos.stream()
+    public ResponseEntity<List<MedicoResponse>> listar() {;
+        return ResponseEntity.ok(medicoService.listar()
+                .stream()
                 .map(MedicoMapper::toMedicoResponse)
-                .toList();
+                .toList());
     }
 
     @PostMapping("/salvar")
-    public MedicoResponse salvar(@RequestBody MedicoRequest request) {
+    public ResponseEntity<MedicoResponse> salvar(@RequestBody MedicoRequest request) {
         MedicoModel novoMedico = MedicoMapper.toMedico(request);
         MedicoModel medicoSalvo = medicoService.salvar(novoMedico);
-        return MedicoMapper.toMedicoResponse(medicoSalvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(MedicoMapper.toMedicoResponse(medicoSalvo));
     }
 
     @GetMapping("/{id}")
-    public MedicoResponse buscarPorId(@PathVariable Long id) {
-        Optional<MedicoModel> medico = medicoService.buscarPorId(id);
-        if (medico.isPresent()) {
-            return MedicoMapper.toMedicoResponse(medico.get());
-        }
-        return null;
+    public ResponseEntity<MedicoResponse> buscarPorId(@PathVariable Long id) {
+        return medicoService.buscarPorId(id).map(medico -> ResponseEntity.ok(MedicoMapper.toMedicoResponse(medico)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
         medicoService.excluir(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

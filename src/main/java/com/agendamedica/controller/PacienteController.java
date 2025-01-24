@@ -5,9 +5,11 @@ import com.agendamedica.controller.request.PacienteRequest;
 import com.agendamedica.controller.response.PacienteResponse;
 import com.agendamedica.entity.PacienteModel;
 import com.agendamedica.service.PacienteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/agendamedica/paciente")
@@ -20,31 +22,29 @@ public class PacienteController {
     }
 
     @GetMapping
-    public List<PacienteResponse> listar() {
-        List<PacienteModel> pacientes = pacienteService.listar();
-        return pacientes.stream()
+    public ResponseEntity<List<PacienteResponse>> listar() {
+        return ResponseEntity.ok(pacienteService.listar()
+                .stream()
                 .map(PacienteMapper::toPacienteResponse)
-                .toList();
+                .toList());
     }
 
     @PostMapping("/salvar")
-    public PacienteResponse salvar(@RequestBody PacienteRequest request) {
+    public ResponseEntity<PacienteResponse> salvar(@RequestBody PacienteRequest request) {
         PacienteModel pacienteModel = PacienteMapper.toPaciente(request);
         PacienteModel pacienteSalvo = pacienteService.salvar(pacienteModel);
-        return PacienteMapper.toPacienteResponse(pacienteSalvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(PacienteMapper.toPacienteResponse(pacienteSalvo));
     }
 
     @GetMapping("/{id}")
-    public PacienteResponse buscarPorId(@PathVariable Long id) {
-        Optional<PacienteModel> paciente = pacienteService.buscarPorId(id);
-        if (paciente.isPresent()) {
-            return PacienteMapper.toPacienteResponse(paciente.get());
-        }
-        return null;
+    public ResponseEntity<PacienteResponse> buscarPorId(@PathVariable Long id) {
+        return pacienteService.buscarPorId(id).map(paciente -> ResponseEntity.ok(PacienteMapper.toPacienteResponse(paciente)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
         pacienteService.excluir(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -5,6 +5,8 @@ import com.agendamedica.controller.request.FuncionarioRequest;
 import com.agendamedica.controller.response.FuncionarioResponse;
 import com.agendamedica.entity.FuncionarioModel;
 import com.agendamedica.service.FuncionarioService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,31 +23,29 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public List<FuncionarioResponse> listar() {
-        List<FuncionarioModel> funcionarios = funcionarioService.listar();
-        return funcionarios.stream()
+    public ResponseEntity<List<FuncionarioResponse>> listar() {
+        return ResponseEntity.ok(funcionarioService.listar()
+                .stream()
                 .map(FuncionarioMapper::toFuncionarioResponse)
-                .toList();
+                .toList());
     }
 
     @PostMapping("/salvar")
-    public FuncionarioResponse salvar(@RequestBody FuncionarioRequest request) {
+    public ResponseEntity<FuncionarioResponse> salvar(@RequestBody FuncionarioRequest request) {
         FuncionarioModel novoFuncionario = FuncionarioMapper.toFuncionario(request);
         FuncionarioModel funcionarioSalvo = funcionarioService.salvar(novoFuncionario);
-        return FuncionarioMapper.toFuncionarioResponse(funcionarioSalvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(FuncionarioMapper.toFuncionarioResponse(funcionarioSalvo));
     }
 
     @GetMapping("/{id}")
-    public FuncionarioResponse buscarPorId(@PathVariable Long id) {
-        Optional<FuncionarioModel> funcionario = funcionarioService.buscarPorId(id);
-        if (funcionario.isPresent()) {
-            return FuncionarioMapper.toFuncionarioResponse(funcionario.get());
-        }
-        return null;
+    public ResponseEntity<FuncionarioResponse> buscarPorId(@PathVariable Long id) {
+        return funcionarioService.buscarPorId(id).map(funcionario -> ResponseEntity.ok(FuncionarioMapper.toFuncionarioResponse(funcionario)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
         funcionarioService.excluir(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

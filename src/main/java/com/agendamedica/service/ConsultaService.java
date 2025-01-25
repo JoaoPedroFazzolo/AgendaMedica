@@ -31,4 +31,5 @@ public class ConsultaService {
     public void excluir(Long id) {
         repository.deleteById(id);
     }
+
 }

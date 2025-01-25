@@ -3,7 +3,7 @@ package com.agendamedica.controller.mapper;
 import com.agendamedica.controller.request.ConsultaRequest;
 import com.agendamedica.controller.response.ConsultaResponse;
 import com.agendamedica.entity.ConsultaModel;
-import lombok.experimental.*;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ConsultaMapper {
@@ -13,6 +13,7 @@ public class ConsultaMapper {
                 .medicoModel(consultaRequest.medicoModel())
                 .pacienteModel(consultaRequest.pacienteModel())
                 .dataConsulta(consultaRequest.dataConsulta())
+                .criadoEm(consultaRequest.criadoEm())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class ConsultaMapper {
                 .medicoModel(consultaModel.getMedicoModel())
                 .pacienteModel(consultaModel.getPacienteModel())
                 .dataConsulta(consultaModel.getDataConsulta())
+                .criadoEm(consultaModel.getCriadoEm())
                 .build();
     }
 }

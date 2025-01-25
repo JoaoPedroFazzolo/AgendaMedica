@@ -5,7 +5,7 @@ import com.agendamedica.entity.PacienteModel;
 
 import java.time.LocalDateTime;
 
-public record ConsultaResponse(Long id, MedicoModel medicoModel, PacienteModel pacienteModel, LocalDateTime dataConsulta) {
+public record ConsultaResponse(Long id, MedicoModel medicoModel, PacienteModel pacienteModel, LocalDateTime dataConsulta, LocalDateTime criadoEm) {
 
     public static Builder builder() {
         return new Builder();
@@ -16,6 +16,7 @@ public record ConsultaResponse(Long id, MedicoModel medicoModel, PacienteModel p
         private MedicoModel medicoModel;
         private PacienteModel pacienteModel;
         private LocalDateTime dataConsulta;
+        private LocalDateTime criadoEm;
 
         public Builder id(Long id) {
             this.id = id;
@@ -37,8 +38,13 @@ public record ConsultaResponse(Long id, MedicoModel medicoModel, PacienteModel p
             return this;
         }
 
+        public Builder criadoEm(LocalDateTime criadoEm) {
+            this.criadoEm = criadoEm;
+            return this;
+        }
+
         public ConsultaResponse build() {
-            return new ConsultaResponse(id, medicoModel, pacienteModel, dataConsulta);
+            return new ConsultaResponse(id, medicoModel, pacienteModel, dataConsulta, LocalDateTime.now());
         }
     }
 }

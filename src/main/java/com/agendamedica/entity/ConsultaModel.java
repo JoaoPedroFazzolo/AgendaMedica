@@ -2,6 +2,7 @@ package com.agendamedica.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,16 +26,24 @@ public class ConsultaModel {
     @Column(name = "data", nullable = false)
     private LocalDateTime dataConsulta;
 
-    public ConsultaModel() {
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @Column(name = "criado_em", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime criadoEm;
+
+    // Construtor padrão
+    public ConsultaModel() {}
+
+    // Construtor privado para Builder
+    private ConsultaModel(Builder builder) {
+        this.id = builder.id;
+        this.medicoModel = builder.medicoModel;
+        this.pacienteModel = builder.pacienteModel;
+        this.dataConsulta = builder.dataConsulta;
+        this.criadoEm = builder.criadoEm;
     }
 
-    public ConsultaModel(long id, MedicoModel medicoModel, PacienteModel pacienteModel, LocalDateTime dataConsulta) {
-        this.id = id;
-        this.medicoModel = medicoModel;
-        this.pacienteModel = pacienteModel;
-        this.dataConsulta = dataConsulta;
-    }
-
+    // Getters e Setters
     public long getId() {
         return id;
     }
@@ -67,8 +76,16 @@ public class ConsultaModel {
         this.dataConsulta = dataConsulta;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
+
+    public void setCriadoEm(LocalDateTime criadoEm) {
+        this.criadoEm = criadoEm;
+    }
+
+    public static ConsultaModel.Builder builder() {
+        return new ConsultaModel.Builder();
     }
 
     public static class Builder {
@@ -76,6 +93,7 @@ public class ConsultaModel {
         private MedicoModel medicoModel;
         private PacienteModel pacienteModel;
         private LocalDateTime dataConsulta;
+        private LocalDateTime criadoEm;
 
         public Builder id(long id) {
             this.id = id;
@@ -97,8 +115,13 @@ public class ConsultaModel {
             return this;
         }
 
+        public Builder criadoEm(LocalDateTime criadoEm) {
+            this.criadoEm = criadoEm;
+            return this;
+        }
+
         public ConsultaModel build() {
-            return new ConsultaModel(id, medicoModel, pacienteModel, dataConsulta);
+            return new ConsultaModel(this);
         }
     }
 }

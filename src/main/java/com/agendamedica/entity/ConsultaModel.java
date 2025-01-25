@@ -88,6 +88,7 @@ public class ConsultaModel {
         return new ConsultaModel.Builder();
     }
 
+
     public static class Builder {
         private long id;
         private MedicoModel medicoModel;

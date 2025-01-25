@@ -22,11 +22,9 @@ public class ConsultaModel {
     @JoinColumn(name = "paciente_id", referencedColumnName = "id", nullable = false)
     private PacienteModel pacienteModel;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "data", nullable = false)
     private LocalDateTime dataConsulta;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "criado_em", nullable = false)
     @CreationTimestamp
     private LocalDateTime criadoEm;

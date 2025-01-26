@@ -8,6 +8,8 @@ import com.agendamedica.repository.MedicoRepository;
 import com.agendamedica.repository.PacienteRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +19,37 @@ public class ConsultaService {
     private final ConsultaRepository repository;
     private final MedicoRepository medicoRepository;
     private final PacienteRepository pacienteRepository;
+    private final ConsultaRepository consultaRepository;
 
-    public ConsultaService(ConsultaRepository repository, MedicoRepository medicoRepository, PacienteRepository pacienteRepository) {
+    public ConsultaService(ConsultaRepository repository, MedicoRepository medicoRepository, PacienteRepository pacienteRepository, ConsultaRepository consultaRepository) {
         this.repository = repository;
         this.medicoRepository = medicoRepository;
         this.pacienteRepository = pacienteRepository;
+        this.consultaRepository = consultaRepository;
     }
 
     public List<ConsultaModel> listar() {
         return repository.findAll();
+    }
+
+    public List<ConsultaModel> buscaPorMedico(Long id){
+        return consultaRepository.findByMedicoModelIdOrderByDataConsultaDesc(id);
+    }
+
+    public List<ConsultaModel> buscaPorPaciente(Long id){
+        return consultaRepository.findByPacienteModelIdOrderByDataConsultaDesc(id);
+    }
+
+    public List<ConsultaModel> buscaPorDataDaConsulta(LocalDate data){
+        LocalDateTime inicioDoDia = data.atStartOfDay();
+        LocalDateTime fimDoDia = data.atTime(23, 59, 59);
+        return consultaRepository.findByDataConsultaBetween(inicioDoDia, fimDoDia);
+    }
+
+    public List<ConsultaModel> buscaPorDataDaCriacaoConsulta(LocalDate data){
+        LocalDateTime inicioDoDia = data.atStartOfDay();
+        LocalDateTime fimDoDia = data.atTime(23, 59, 59);
+        return consultaRepository.findByCriadoEmBetween(inicioDoDia, fimDoDia);
     }
 
     public ConsultaModel salvar(ConsultaModel consulta) {

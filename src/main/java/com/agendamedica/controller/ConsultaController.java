@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -53,5 +54,25 @@ public class ConsultaController {
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         consultaService.excluir(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/busca/medico")
+    public ResponseEntity<List<ConsultaResponse>> listarPorMedico(@RequestParam Long medico) {
+        return ResponseEntity.ok(consultaService.buscaPorMedico(medico).stream().map(ConsultaMapper::toConsultaResponse).toList());
+    }
+
+    @GetMapping("/busca/paciente")
+    public ResponseEntity<List<ConsultaResponse>> listarPorPaciente(@RequestParam Long paciente) {
+        return ResponseEntity.ok(consultaService.buscaPorPaciente(paciente).stream().map(ConsultaMapper::toConsultaResponse).toList());
+    }
+
+    @GetMapping("/busca/dataconsulta")
+    public ResponseEntity<List<ConsultaResponse>> listarPorDataConsulta(@RequestParam LocalDate dataConsulta) {
+        return ResponseEntity.ok(consultaService.buscaPorDataDaConsulta(dataConsulta).stream().map(ConsultaMapper::toConsultaResponse).toList());
+    }
+
+    @GetMapping("/busca/criacaoconsulta")
+    public ResponseEntity<List<ConsultaResponse>> listarPorDataCriacaoConsulta(@RequestParam LocalDate criacaoConsulta) {
+        return ResponseEntity.ok(consultaService.buscaPorDataDaCriacaoConsulta(criacaoConsulta).stream().map(ConsultaMapper::toConsultaResponse).toList());
     }
 }

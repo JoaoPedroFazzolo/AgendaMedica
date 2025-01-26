@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/agendamedica/funcionario")
@@ -51,7 +52,12 @@ public class FuncionarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        funcionarioService.excluir(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        Optional<FuncionarioModel> optionalFuncionarioModel = funcionarioService.buscarPorId(id);
+        if (optionalFuncionarioModel.isPresent()) {
+            funcionarioService.excluir(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.notFound().build();
+
     }
 }

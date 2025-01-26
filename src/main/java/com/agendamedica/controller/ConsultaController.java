@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/agendamedica/consulta")
@@ -52,8 +53,12 @@ public class ConsultaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        consultaService.excluir(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        Optional<ConsultaModel> optionalConsulta = consultaService.buscarPorId(id);
+        if (optionalConsulta.isPresent()) {
+            consultaService.excluir(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/busca/medico")

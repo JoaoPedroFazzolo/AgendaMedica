@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -51,7 +52,11 @@ public class PacienteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        pacienteService.excluir(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        Optional<PacienteModel> optionalPacienteModel = pacienteService.buscarPorId(id);
+        if (optionalPacienteModel.isPresent()) {
+            pacienteService.excluir(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

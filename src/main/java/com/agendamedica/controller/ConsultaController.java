@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/agendamedica/consulta")
@@ -40,6 +39,13 @@ public class ConsultaController {
     @GetMapping("/{id}")
     public ResponseEntity<ConsultaResponse> buscarPorId(@PathVariable Long id) {
         return consultaService.buscarPorId(id).map(consulta -> ResponseEntity.ok(ConsultaMapper.toConsultaResponse(consulta)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<ConsultaResponse> alterar(@RequestBody ConsultaRequest request, @PathVariable Long id) {
+        return consultaService.atualizar(id, ConsultaMapper.toConsulta(request))
+                .map(consulta -> ResponseEntity.ok(ConsultaMapper.toConsultaResponse(consulta)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

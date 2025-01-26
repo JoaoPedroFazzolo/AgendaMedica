@@ -10,25 +10,38 @@ import java.util.Optional;
 @Service
 public class FuncionarioService {
 
-    private final FuncionarioRepository funcionarioRepository;
+    private final FuncionarioRepository repository;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository) {
-        this.funcionarioRepository = funcionarioRepository;
+    public FuncionarioService(FuncionarioRepository repository) {
+        this.repository = repository;
     }
 
     public List<FuncionarioModel> listar() {
-        return funcionarioRepository.findAll();
+        return repository.findAll();
     }
 
     public FuncionarioModel salvar(FuncionarioModel funcionario) {
-        return funcionarioRepository.save(funcionario);
+        return repository.save(funcionario);
     }
 
     public Optional<FuncionarioModel> buscarPorId(Long id) {
-        return funcionarioRepository.findById(id);
+        return repository.findById(id);
+    }
+
+    public Optional<FuncionarioModel> atualizar(Long id, FuncionarioModel updateFuncionairo) {
+        Optional<FuncionarioModel> optionalFuncionario = repository.findById(id);
+        if (optionalFuncionario.isPresent()) {
+            FuncionarioModel funciionario = optionalFuncionario.get();
+            funciionario.setNome(updateFuncionairo.getNome());
+            funciionario.setCpf(updateFuncionairo.getCpf());
+            funciionario.setFuncao(updateFuncionairo.getFuncao());
+            repository.save(funciionario);
+            return Optional.of(funciionario);
+        }
+        return Optional.empty();
     }
 
     public void excluir(Long id) {
-        funcionarioRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

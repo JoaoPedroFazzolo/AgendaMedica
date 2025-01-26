@@ -44,6 +44,19 @@ public class ConsultaService {
         return repository.findById(id);
     }
 
+    public Optional<ConsultaModel> atualizar(Long id, ConsultaModel updateConsulta) {
+        Optional<ConsultaModel> optionalConsulta = repository.findById(id);
+        if (optionalConsulta.isPresent()) {
+            ConsultaModel consulta = optionalConsulta.get();
+            consulta.setMedicoModel(updateConsulta.getMedicoModel());
+            consulta.setPacienteModel(updateConsulta.getPacienteModel());
+            consulta.setDataConsulta(updateConsulta.getDataConsulta());
+            repository.save(consulta);
+            return Optional.of(consulta);
+        }
+        return Optional.empty();
+    }
+
     public void excluir(Long id) {
         repository.deleteById(id);
     }

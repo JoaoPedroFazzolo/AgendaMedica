@@ -42,6 +42,13 @@ public class PacienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<PacienteResponse> alterar(@RequestBody PacienteRequest request, @PathVariable Long id) {
+        return pacienteService.atualizar(id, PacienteMapper.toPaciente(request))
+                .map(paciente -> ResponseEntity.ok(PacienteMapper.toPacienteResponse(paciente)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         pacienteService.excluir(id);

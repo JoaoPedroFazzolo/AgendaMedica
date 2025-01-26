@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/agendamedica/medico")
@@ -40,6 +39,13 @@ public class MedicoController {
     @GetMapping("/{id}")
     public ResponseEntity<MedicoResponse> buscarPorId(@PathVariable Long id) {
         return medicoService.buscarPorId(id).map(medico -> ResponseEntity.ok(MedicoMapper.toMedicoResponse(medico)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<MedicoResponse> alterar(@RequestBody MedicoRequest request, @PathVariable Long id) {
+        return medicoService.atualizar(id, MedicoMapper.toMedico(request))
+                .map(medico -> ResponseEntity.ok(MedicoMapper.toMedicoResponse(medico)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

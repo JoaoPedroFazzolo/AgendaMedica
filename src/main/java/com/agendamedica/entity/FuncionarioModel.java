@@ -19,6 +19,9 @@ public class FuncionarioModel {
     @Column(name = "funcao", length = 100, nullable = false)
     private String funcao;
 
+    @OneToOne(mappedBy = "funcionario")
+    private UsuarioModel usuarioModel;
+
     public FuncionarioModel() {
     }
 

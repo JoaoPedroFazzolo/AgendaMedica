@@ -50,7 +50,7 @@ public record ConsultaResponse(Long id, MedicoModel medicoModel,
         }
 
         public ConsultaResponse build() {
-            return new ConsultaResponse(id, medicoModel, pacienteModel, dataConsulta, LocalDateTime.now());
+            return new ConsultaResponse(id, medicoModel, pacienteModel, dataConsulta, criadoEm);
         }
     }
 }

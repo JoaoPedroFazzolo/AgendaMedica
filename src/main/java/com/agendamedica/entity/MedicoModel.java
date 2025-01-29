@@ -26,9 +26,6 @@ public class MedicoModel {
     @JsonIgnore
     private List<ConsultaModel> consultaModels;
 
-    @OneToOne(mappedBy = "medico")
-    private UsuarioModel usuarioModel;
-
     public MedicoModel() {
     }
 

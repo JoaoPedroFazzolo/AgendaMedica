@@ -22,15 +22,15 @@ public class UsuarioModel {
     private TipoUsuario tipoUsuario;
 
     @OneToOne
-    @JoinColumn(name = "medico_id", referencedColumnName = "id")
+    @JoinColumn(name = "medico_id", referencedColumnName = "id", nullable = true)
     private MedicoModel medico;
 
     @OneToOne
-    @JoinColumn(name = "paciente_id", referencedColumnName = "id")
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", nullable = true)
     private PacienteModel paciente;
 
     @OneToOne
-    @JoinColumn(name = "funcionario_id", referencedColumnName = "id")
+    @JoinColumn(name = "funcionario_id", referencedColumnName = "id", nullable = true)
     private FuncionarioModel funcionario;
 
     public UsuarioModel() {
@@ -46,7 +46,7 @@ public class UsuarioModel {
         this.funcionario = funcionario;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -100,5 +100,68 @@ public class UsuarioModel {
 
     public void setFuncionario(FuncionarioModel funcionario) {
         this.funcionario = funcionario;
+    }
+
+    private UsuarioModel(Builder builder) {
+        this.id = builder.id;
+        this.email = builder.email;
+        this.senha = builder.senha;
+        this.tipoUsuario = builder.tipoUsuario;
+        this.medico = builder.medico;
+        this.paciente = builder.paciente;
+        this.funcionario = builder.funcionario;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private String email;
+        private String senha;
+        private TipoUsuario tipoUsuario;
+        private MedicoModel medico;
+        private PacienteModel paciente;
+        private FuncionarioModel funcionario;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder senha(String senha) {
+            this.senha = senha;
+            return this;
+        }
+
+        public Builder tipoUsuario(TipoUsuario tipoUsuario) {
+            this.tipoUsuario = tipoUsuario;
+            return this;
+        }
+
+        public Builder medico(MedicoModel medico) {
+            this.medico = medico;
+            return this;
+        }
+
+        public Builder paciente(PacienteModel paciente) {
+            this.paciente = paciente;
+            return this;
+        }
+
+        public Builder funcionario(FuncionarioModel funcionario) {
+            this.funcionario = funcionario;
+            return this;
+        }
+
+        public UsuarioModel build() {
+            return new UsuarioModel(this);
+        }
     }
 }

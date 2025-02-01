@@ -36,14 +36,11 @@ public class UsuarioService {
     @Transactional
     public UsuarioModel criarUsuario(UsuarioModel usuarioModel) {
         if (usuarioModel.getTipoUsuario() == TipoUsuario.MEDICO) {
-            MedicoModel medico = criarEAdicionarEntidade(usuarioModel.getMedico(), medicoRepository);
-            usuarioModel.setMedico(medico);
+            criarEAdicionarEntidade(usuarioModel.getMedico(), medicoRepository);
         } else if (usuarioModel.getTipoUsuario() == TipoUsuario.PACIENTE) {
-            PacienteModel paciente = criarEAdicionarEntidade(usuarioModel.getPaciente(), pacienteRepository);
-            usuarioModel.setPaciente(paciente);
+            criarEAdicionarEntidade(usuarioModel.getPaciente(), pacienteRepository);
         } else if (usuarioModel.getTipoUsuario() == TipoUsuario.FUNCIONARIO) {
-            FuncionarioModel funcionario = criarEAdicionarEntidade(usuarioModel.getFuncionario(), funcionarioRepository);
-            usuarioModel.setFuncionario(funcionario);
+            criarEAdicionarEntidade(usuarioModel.getFuncionario(), funcionarioRepository);
         }
         return usuarioRepository.save(usuarioModel);
     }

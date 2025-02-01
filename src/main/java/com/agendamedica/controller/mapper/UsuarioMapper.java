@@ -2,28 +2,36 @@ package com.agendamedica.controller.mapper;
 
 import com.agendamedica.controller.request.UsuarioRequest;
 import com.agendamedica.controller.response.UsuarioResponse;
-import com.agendamedica.entity.FuncionarioModel;
-import com.agendamedica.entity.MedicoModel;
-import com.agendamedica.entity.PacienteModel;
-import com.agendamedica.entity.UsuarioModel;
+import com.agendamedica.entity.*;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class UsuarioMapper {
 
     public static UsuarioModel toUsuario(UsuarioRequest request) {
         MedicoModel medico = null;
         PacienteModel paciente = null;
         FuncionarioModel funcionario = null;
-        if ("MEDICO".equals(request.tipoUsuario())) {
-            medico = new MedicoModel();
-        } else if ("PACIENTE".equals(request.tipoUsuario())) {
-            paciente = new PacienteModel();
-        } else if ("FUNCIONARIO".equals(request.tipoUsuario())) {
-            funcionario = new FuncionarioModel();
+        if (TipoUsuario.MEDICO.equals(request.tipoUsuario())) {
+            medico = MedicoModel.builder()
+                    .nome(request.medico().getNome())
+                    .cpf(request.medico().getCpf())
+                    .especialidade(request.medico().getEspecialidade()).build();
+        } else if (TipoUsuario.PACIENTE.equals(request.tipoUsuario())) {
+            paciente = PacienteModel.builder()
+                    .nome(request.paciente().getNome())
+                    .cpf(request.paciente().getCpf())
+                    .telefone(request.paciente().getTelefone()).build();
+        } else if (TipoUsuario.FUNCIONARIO.equals(request.tipoUsuario())) {
+            funcionario = FuncionarioModel.builder()
+                    .nome(request.funcionario().getNome())
+                    .cpf(request.funcionario().getCpf())
+                    .funcao(request.funcionario().getFuncao()).build();
         }
 
         return UsuarioModel.builder()
                 .email(request.email())
-                .senha(request.senha()) // Idealmente, a senha deve ser encriptada antes de salvar
+                .senha(request.senha())
                 .tipoUsuario(request.tipoUsuario())
                 .medico(medico)
                 .paciente(paciente)
@@ -37,9 +45,9 @@ public class UsuarioMapper {
                 .id(usuario.getId())
                 .email(usuario.getEmail())
                 .tipoUsuario(usuario.getTipoUsuario())
-                .medicoId(usuario.getMedico() != null ? usuario.getMedico().getId() : null)
-                .pacienteId(usuario.getPaciente() != null ? usuario.getPaciente().getId() : null)
-                .funcionarioId(usuario.getFuncionario() != null ? usuario.getFuncionario().getId() : null)
+                .medicoId(usuario.getMedico() != null ? usuario.getMedico() : null)
+                .pacienteId(usuario.getPaciente() != null ? usuario.getPaciente() : null)
+                .funcionarioId(usuario.getFuncionario() != null ? usuario.getFuncionario() : null)
                 .build();
     }
 

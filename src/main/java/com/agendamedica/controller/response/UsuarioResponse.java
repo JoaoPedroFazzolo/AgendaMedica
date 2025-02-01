@@ -1,14 +1,17 @@
 package com.agendamedica.controller.response;
 
+import com.agendamedica.entity.FuncionarioModel;
+import com.agendamedica.entity.MedicoModel;
+import com.agendamedica.entity.PacienteModel;
 import com.agendamedica.entity.TipoUsuario;
 
 public record UsuarioResponse(
         Long id,
         String email,
         TipoUsuario tipoUsuario,
-        Long medicoId,
-        Long pacienteId,
-        Long funcionarioId
+        MedicoModel medicoId,
+        PacienteModel pacienteId,
+        FuncionarioModel funcionarioId
 ) {
     public static Builder builder() {
         return new Builder();
@@ -18,9 +21,9 @@ public record UsuarioResponse(
         private Long id;
         private String email;
         private TipoUsuario tipoUsuario;
-        private Long medicoId;
-        private Long pacienteId;
-        private Long funcionarioId;
+        private MedicoModel medico;
+        private PacienteModel paciente;
+        private FuncionarioModel funcionario;
 
         public Builder id(Long id) {
             this.id = id;
@@ -37,23 +40,23 @@ public record UsuarioResponse(
             return this;
         }
 
-        public Builder medicoId(Long medicoId) {
-            this.medicoId = medicoId;
+        public Builder medicoId(MedicoModel medico) {
+            this.medico = medico;
             return this;
         }
 
-        public Builder pacienteId(Long pacienteId) {
-            this.pacienteId = pacienteId;
+        public Builder pacienteId(PacienteModel paciente) {
+            this.paciente = paciente;
             return this;
         }
 
-        public Builder funcionarioId(Long funcionarioId) {
-            this.funcionarioId = funcionarioId;
+        public Builder funcionarioId(FuncionarioModel funcionario) {
+            this.funcionario = funcionario;
             return this;
         }
 
         public UsuarioResponse build() {
-            return new UsuarioResponse(id, email, tipoUsuario, medicoId, pacienteId, funcionarioId);
+            return new UsuarioResponse(id, email, tipoUsuario, medico, paciente, funcionario);
         }
     }
 }

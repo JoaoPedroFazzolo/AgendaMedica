@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/agendamedica/auth")
 public class UsuarioController {
 
     private final UsuarioService service;

@@ -25,7 +25,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/criar")
-    public UsuarioModel criarUsuario(@RequestBody UsuarioModel request) {
-        return service.criarUsuario(request);
+    public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody UsuarioRequest request) {
+        UsuarioModel usuarioModel = UsuarioMapper.toUsuario(request);
+        UsuarioModel usuarioSalvo = service.criarUsuario(usuarioModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toUsuarioResponse(usuarioSalvo));
     }
 }

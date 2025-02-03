@@ -27,7 +27,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
 
         if(Strings.isNotEmpty(authorization) && authorization.startsWith("Bearer ")) {
-            System.out.println("entrei no filtro");
             String token = authorization.substring("Bearer ".length());
 
             Optional<JWTUserData> optionalJWTUserData = tokenService.verifyToken(token);

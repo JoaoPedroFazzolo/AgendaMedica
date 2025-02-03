@@ -1,5 +1,11 @@
 package com.agendamedica.controller.request;
 
 
-public record LoginRequest(String email, String senha) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record LoginRequest(
+        @NotEmpty(message = "email do usuario é obrigatório")
+        String email,
+        @NotEmpty(message = "senha do usuario é obrigatório")
+        String senha) {
 }

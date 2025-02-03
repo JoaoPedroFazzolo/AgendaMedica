@@ -34,7 +34,6 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
-            System.out.println("entrei no token");
             return Optional.of(JWTUserData.builder()
                     .id(jwt.getClaim("userId").asLong())
                     .email(jwt.getClaim("userEmail").asString()).build());

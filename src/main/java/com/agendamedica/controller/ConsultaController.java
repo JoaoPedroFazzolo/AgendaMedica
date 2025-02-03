@@ -5,6 +5,7 @@ import com.agendamedica.controller.request.ConsultaRequest;
 import com.agendamedica.controller.response.ConsultaResponse;
 import com.agendamedica.entity.ConsultaModel;
 import com.agendamedica.service.ConsultaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ConsultaController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<ConsultaResponse> salvar(@RequestBody ConsultaRequest request) {
+    public ResponseEntity<ConsultaResponse> salvar(@Valid @RequestBody ConsultaRequest request) {
         ConsultaModel novaConsulta = ConsultaMapper.toConsulta(request);
         ConsultaModel consultaSalva = consultaService.salvar(novaConsulta);
         return ResponseEntity.status(HttpStatus.CREATED).body(ConsultaMapper.toConsultaResponse(consultaSalva));
@@ -45,7 +46,7 @@ public class ConsultaController {
     }
 
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<ConsultaResponse> alterar(@RequestBody ConsultaRequest request, @PathVariable Long id) {
+    public ResponseEntity<ConsultaResponse> alterar(@Valid @RequestBody ConsultaRequest request, @PathVariable Long id) {
         return consultaService.atualizar(id, ConsultaMapper.toConsulta(request))
                 .map(consulta -> ResponseEntity.ok(ConsultaMapper.toConsultaResponse(consulta)))
                 .orElse(ResponseEntity.notFound().build());

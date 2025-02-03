@@ -5,6 +5,7 @@ import com.agendamedica.controller.request.FuncionarioRequest;
 import com.agendamedica.controller.response.FuncionarioResponse;
 import com.agendamedica.entity.FuncionarioModel;
 import com.agendamedica.service.FuncionarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class FuncionarioController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<FuncionarioResponse> salvar(@RequestBody FuncionarioRequest request) {
+    public ResponseEntity<FuncionarioResponse> salvar(@Valid @RequestBody FuncionarioRequest request) {
         FuncionarioModel novoFuncionario = FuncionarioMapper.toFuncionario(request);
         FuncionarioModel funcionarioSalvo = funcionarioService.salvar(novoFuncionario);
         return ResponseEntity.status(HttpStatus.CREATED).body(FuncionarioMapper.toFuncionarioResponse(funcionarioSalvo));
@@ -44,7 +45,7 @@ public class FuncionarioController {
     }
 
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<FuncionarioResponse> alterar(@RequestBody FuncionarioRequest request, @PathVariable Long id) {
+    public ResponseEntity<FuncionarioResponse> alterar(@Valid @RequestBody FuncionarioRequest request, @PathVariable Long id) {
         return funcionarioService.atualizar(id, FuncionarioMapper.toFuncionario(request))
                 .map(funcionario -> ResponseEntity.ok(FuncionarioMapper.toFuncionarioResponse(funcionario)))
                 .orElse(ResponseEntity.notFound().build());

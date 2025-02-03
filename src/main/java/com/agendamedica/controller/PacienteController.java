@@ -5,6 +5,7 @@ import com.agendamedica.controller.request.PacienteRequest;
 import com.agendamedica.controller.response.PacienteResponse;
 import com.agendamedica.entity.PacienteModel;
 import com.agendamedica.service.PacienteService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class PacienteController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<PacienteResponse> salvar(@RequestBody PacienteRequest request) {
+    public ResponseEntity<PacienteResponse> salvar(@Valid @RequestBody PacienteRequest request) {
         PacienteModel pacienteModel = PacienteMapper.toPaciente(request);
         PacienteModel pacienteSalvo = pacienteService.salvar(pacienteModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(PacienteMapper.toPacienteResponse(pacienteSalvo));
@@ -44,7 +45,7 @@ public class PacienteController {
     }
 
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<PacienteResponse> alterar(@RequestBody PacienteRequest request, @PathVariable Long id) {
+    public ResponseEntity<PacienteResponse> alterar(@Valid @RequestBody PacienteRequest request, @PathVariable Long id) {
         return pacienteService.atualizar(id, PacienteMapper.toPaciente(request))
                 .map(paciente -> ResponseEntity.ok(PacienteMapper.toPacienteResponse(paciente)))
                 .orElse(ResponseEntity.notFound().build());

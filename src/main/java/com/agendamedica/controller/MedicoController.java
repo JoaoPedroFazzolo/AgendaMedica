@@ -5,6 +5,7 @@ import com.agendamedica.controller.request.MedicoRequest;
 import com.agendamedica.controller.response.MedicoResponse;
 import com.agendamedica.entity.MedicoModel;
 import com.agendamedica.service.MedicoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class MedicoController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<MedicoResponse> salvar(@RequestBody MedicoRequest request) {
+    public ResponseEntity<MedicoResponse> salvar(@Valid @RequestBody MedicoRequest request) {
         MedicoModel novoMedico = MedicoMapper.toMedico(request);
         MedicoModel medicoSalvo = medicoService.salvar(novoMedico);
         return ResponseEntity.status(HttpStatus.CREATED).body(MedicoMapper.toMedicoResponse(medicoSalvo));
@@ -44,7 +45,7 @@ public class MedicoController {
     }
 
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<MedicoResponse> alterar(@RequestBody MedicoRequest request, @PathVariable Long id) {
+    public ResponseEntity<MedicoResponse> alterar(@Valid @RequestBody MedicoRequest request, @PathVariable Long id) {
         return medicoService.atualizar(id, MedicoMapper.toMedico(request))
                 .map(medico -> ResponseEntity.ok(MedicoMapper.toMedicoResponse(medico)))
                 .orElse(ResponseEntity.notFound().build());

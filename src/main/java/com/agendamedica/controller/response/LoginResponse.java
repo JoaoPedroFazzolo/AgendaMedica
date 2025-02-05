@@ -1,4 +1,9 @@
 package com.agendamedica.controller.response;
 
-public record LoginResponse(String token) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public record LoginResponse(
+
+        @Schema(type = "String", description = "Envia o token de autenticacao")
+        String token) {
 }

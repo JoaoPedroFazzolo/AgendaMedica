@@ -1,11 +1,15 @@
 package com.agendamedica.controller.request;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 
 public record LoginRequest(
-        @NotEmpty(message = "email do usuario é obrigatório")
+        @Schema(type = "String", description = "Email do usuario")
+        @NotEmpty(message = "Email do usuario é obrigatório")
         String email,
-        @NotEmpty(message = "senha do usuario é obrigatório")
+
+        @Schema(type = "String", description = "Senha do usuario")
+        @NotEmpty(message = "Senha do usuario é obrigatório")
         String senha) {
 }

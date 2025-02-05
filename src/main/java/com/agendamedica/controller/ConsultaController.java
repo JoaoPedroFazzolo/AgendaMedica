@@ -1,11 +1,13 @@
 package com.agendamedica.controller;
 
+import com.agendamedica.controller.interfaces.ConsultaInterface;
 import com.agendamedica.controller.mapper.ConsultaMapper;
 import com.agendamedica.controller.request.ConsultaRequest;
 import com.agendamedica.controller.response.ConsultaResponse;
 import com.agendamedica.entity.ConsultaModel;
 import com.agendamedica.service.ConsultaService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/agendamedica/consulta")
-public class ConsultaController {
+public class ConsultaController implements ConsultaInterface {
 
     private final ConsultaService consultaService;
-
-    public ConsultaController(ConsultaService consultaService) {
-        this.consultaService = consultaService;
-    }
 
     @GetMapping
     public ResponseEntity<List<ConsultaResponse>> listar() {

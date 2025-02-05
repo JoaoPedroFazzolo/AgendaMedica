@@ -1,6 +1,7 @@
 package com.agendamedica.controller;
 
 import com.agendamedica.config.TokenService;
+import com.agendamedica.controller.interfaces.UsuarioInterface;
 import com.agendamedica.controller.mapper.UsuarioMapper;
 import com.agendamedica.controller.request.LoginRequest;
 import com.agendamedica.controller.request.UsuarioRequest;
@@ -9,7 +10,13 @@ import com.agendamedica.controller.response.UsuarioResponse;
 import com.agendamedica.entity.UsuarioModel;
 import com.agendamedica.exception.UsernameOrPasswordInvalidException;
 import com.agendamedica.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,18 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/agendamedica/auth")
-public class UsuarioController {
+@RequiredArgsConstructor
+public class UsuarioController implements UsuarioInterface {
 
     private final UsuarioService service;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
-
-
-    public UsuarioController(UsuarioService service, AuthenticationManager authenticationManager, TokenService tokenService) {
-        this.service = service;
-        this.authenticationManager = authenticationManager;
-        this.tokenService = tokenService;
-    }
 
     @PostMapping("/criar")
     public ResponseEntity<UsuarioResponse> criarUsuario(@Valid @RequestBody UsuarioRequest request) {
@@ -42,6 +43,7 @@ public class UsuarioController {
         UsuarioModel usuarioSalvo = service.criarUsuario(usuarioModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toUsuarioResponse(usuarioSalvo));
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
